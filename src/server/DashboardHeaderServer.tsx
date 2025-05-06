@@ -7,6 +7,8 @@ export const DashboardHeaderServer = async () => {
     const authenticated = await isAuthenticated();
     const user = await getUser();
 
+
+
     return (
         <DashboardHeader isAuthenticated={authenticated} user={user}/>
     )
