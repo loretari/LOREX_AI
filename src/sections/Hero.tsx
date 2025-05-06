@@ -10,6 +10,7 @@ import { SectionBorder } from "../components/SectionBorder";
 import {SectionContent} from "../components/SectionContent";
 import { motion, useScroll, useTransform, useMotionValue, useSpring} from "framer-motion";
 import {useEffect, useRef, useState} from "react";
+import {RegisterLink} from "@kinde-oss/kinde-auth-nextjs/components";
 
 export const useMousePosition = () => {
     const [innerWidth, setInnerWidth] = useState(1);
@@ -103,7 +104,9 @@ export const Hero = () => {
            LorexAI sukuria aukštos kokybės vaizdus su AI modeliais, paruoštus Jūsų el.parduotuvei, socialinimas tinklams ar kampanijoms.
       </p>
           <div className= "flex justify-center">
+              <RegisterLink>
       <Button variant= "secondary" className= "mt-10">Išbandykite dabar</Button>
+              </RegisterLink>
           </div>
             <div className= "relative isolate max-w-5xl mx-auto">
                 <div className= "absolute left-1/2 top-0">

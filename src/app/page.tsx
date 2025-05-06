@@ -6,11 +6,12 @@ import { Pricing } from "../sections/Pricing";
 import { Testimonials } from "../sections/Testimonials";
 import { CallToAction } from "../sections/CallToAction";
 import { Footer } from "../sections/Footer";
+import { HeaderServer } from "../server/HeaderServer";
 
 
 export default function Home() {
   return <div>
-    <Header />
+    <HeaderServer />
     <Hero />
     <Companies />
     <Features />

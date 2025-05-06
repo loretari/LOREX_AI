@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Sora, Space_Grotesk } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import Header from "../sections/Header";
 import HeaderServer from "../server/HeaderServer";
-
+import {DashboardHeaderServer} from "../../server/DashboardHeaderServer";
+import DashboardLayout from "./sections/DashboardLayout";
+import {DashboardNav} from "./components/DashboardNav";
 
 
 const soraFont = Sora({
@@ -32,10 +34,13 @@ export default function RootLayout({
         <body
             className= {`${soraFont.variable} ${spaceGroteskFont.variable} antialiased bg-gray-900 text-gray-300 font-body`}
         >
-        {/*<HeaderServer/>*/}
+        <DashboardHeaderServer/>
+        <DashboardLayout/>
         {children}
-        {/*<Header/>*/}
+
         </body>
         </html>
     );
 }
+
+

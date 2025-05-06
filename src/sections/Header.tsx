@@ -8,6 +8,7 @@ import {useState} from "react";
 import { Orbit } from "../components/Orbit";
 import { twMerge } from 'tailwind-merge';
 import {Logo} from "../components/Logo";
+import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 
 
 type NavItem = {
@@ -62,7 +63,10 @@ export const loginItems: LoginItem[] = [
   },
 ];
 
-export const Header = () => {
+export const Header = ({ isAuthenticated } : {isAuthenticated: boolean}) => {
+
+
+
 const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   return (
       <>
@@ -96,20 +100,37 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
       </nav>
   </div>
   <div className= "hidden lg:flex gap-4">
-    {loginItems.map(({ buttonVariant, name, href }) => (
-        <a href={href} key={name}>
-        <Button variant={buttonVariant}>{name}</Button>
-        </a>
+    {loginItems.map(({ buttonVariant, name }) => (
+        <LoginLink key={name}>
+          <Button variant={buttonVariant}>{name}</Button>
+        </LoginLink>,
+
+
+        <RegisterLink key={name}>
+          <Button variant={buttonVariant}>{name}</Button>
+        </RegisterLink>
     ))}
+
+
+        {/*{isAuthenticated ? (*/}
+        {/*      <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>*/}
+        {/*  ) : (*/}
+        {/*    loginItems.map(({ buttonVariant, name }) => (*/}
+        {/*        <LoginLink key={name}>*/}
+        {/*          <Button variant={buttonVariant}>{name}</Button>*/}
+        {/*        </LoginLink>*/}
+        {/*    )),*/}
+        {/*  loginItems.map(({ buttonVariant, name }) => (*/}
+        {/*        <RegisterLink key={name}>*/}
+        {/*  <Button variant={buttonVariant}>{name}</Button>*/}
+        {/*  </RegisterLink>*/}
+
+        {/*  ))*/}
+        {/*)}*/}
 
   </div>
   <div className= "flex items-center lg:hidden">
-    {/*<button className="size-10 rounded-lg border-2 border-transparent [background:linear-gradient(var(--color-gray-950),var(--color-gray-950))_content-box,conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))_border-box] relative onClick={() => setIsMobileNavOpen((curr) => !curr)}">*/}
-    {/*  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2">*/}
-    {/*    <div className="w-4 h-0.5 bg-gray-100"></div>*/}
-    {/*    <div className="w-4 h-0.5 bg-gray-100"></div>*/}
-    {/*  </div>*/}
-    {/*</button>*/}
+
     <button className= "size-10 rounded-lg border-2 border-transparent [background:linear-gradient(var(--color-gray-950),var(--color-gray-950))_content-box,conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))] _border-box] relative"
             onClick={() => setIsMobileNavOpen((curr) => !curr)}>
       <div className= "absolute top-1/2 left-1/2 -translate-x-1/2
@@ -119,16 +140,16 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
           isMobileNavOpen && "rotate-45 translate-y-0.5 "
       )}
       ></div>
-      {/*</div>*/}
-      {/*<div className= "absolute top-1/2 left-1/2 -translate-x-1/2*/}
-      {/* -translate-y-1/2">*/}
+
       <div className={twMerge(
           "w-5 h-0.5 bg-gray-100 transform transition duration-300 origin-center",
           isMobileNavOpen && "-translate-y-0.5 -rotate-45"
       )}
       ></div>
       </div>
+
     </button>
+
   </div>
 </div>
     </div>
@@ -168,11 +189,22 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
                           }}
                       >{name}</a>
                   ))}
-                  {loginItems.map(({ buttonVariant, name, href }) => (
-                          <a href= {href} key={name} className= "w-full max-w-xs">
+                  {isAuthenticated ? (
+                      <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>
+                  ) : (
+                      loginItems.map(({ buttonVariant, name }) => (
+                          <LoginLink key={name} className= "w-full max-w-xs">>
                             <Button block variant={buttonVariant}>{name}</Button>
-                          </a>
-                  ))}
+                          </LoginLink>
+                      )),
+                          loginItems.map(({ buttonVariant, name }) => (
+                              <RegisterLink key={name} className= "w-full max-w-xs">
+                                <Button block variant={buttonVariant}>{name}</Button>
+                              </RegisterLink>
+
+                          ))
+                  )}
+
                 </nav>
               </div>
             </div>
