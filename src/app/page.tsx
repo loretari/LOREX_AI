@@ -6,7 +6,7 @@ import { Pricing } from "../sections/Pricing";
 import { Testimonials } from "../sections/Testimonials";
 import { CallToAction } from "../sections/CallToAction";
 import { Footer } from "../sections/Footer";
-import { HeaderServer } from "../server/HeaderServer";
+import { HeaderServer } from "../components/server/HeaderServer";
 
 
 export default function Home() {

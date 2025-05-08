@@ -1,14 +1,13 @@
 "use client";
-import logo from '../assets/images/logo_233.png'
-import {Image} from "next/dist/client/image-component";
+
 import { Button, ButtonProps } from '../components/Buttons';
-import {string} from "prop-types";
-import {satisfies} from "next/dist/lib/semver-noop";
 import {useState} from "react";
 import { Orbit } from "../components/Orbit";
 import { twMerge } from 'tailwind-merge';
 import {Logo} from "../components/Logo";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
+
+
 
 
 type NavItem = {
@@ -63,9 +62,19 @@ export const loginItems: LoginItem[] = [
   },
 ];
 
+const loginButton: LoginItem = {
+  buttonVariant: "tertiary",
+  name: "Prisijungti",
+  href: "#prisijungti",
+};
+
+const registerButton: LoginItem = {
+  buttonVariant: "primary",
+  name: "Registruotis",
+  href: "#registruotis",
+};
+
 export const Header = ({ isAuthenticated } : {isAuthenticated: boolean}) => {
-
-
 
 const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   return (
@@ -100,33 +109,21 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
       </nav>
   </div>
   <div className= "hidden lg:flex gap-4">
-    {loginItems.map(({ buttonVariant, name }) => (
-        <LoginLink key={name}>
-          <Button variant={buttonVariant}>{name}</Button>
-        </LoginLink>,
+    {isAuthenticated ? (
+            <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>
+        ) : (
+            <>
+              <LoginLink >
+                <Button variant={loginButton.buttonVariant}>{loginButton.name}</Button>
+              </LoginLink>
 
 
-        <RegisterLink key={name}>
-          <Button variant={buttonVariant}>{name}</Button>
-        </RegisterLink>
-    ))}
+              <RegisterLink >
+                <Button variant={registerButton.buttonVariant}>{registerButton.name}</Button>
+              </RegisterLink>
 
-
-        {/*{isAuthenticated ? (*/}
-        {/*      <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>*/}
-        {/*  ) : (*/}
-        {/*    loginItems.map(({ buttonVariant, name }) => (*/}
-        {/*        <LoginLink key={name}>*/}
-        {/*          <Button variant={buttonVariant}>{name}</Button>*/}
-        {/*        </LoginLink>*/}
-        {/*    )),*/}
-        {/*  loginItems.map(({ buttonVariant, name }) => (*/}
-        {/*        <RegisterLink key={name}>*/}
-        {/*  <Button variant={buttonVariant}>{name}</Button>*/}
-        {/*  </RegisterLink>*/}
-
-        {/*  ))*/}
-        {/*)}*/}
+            </>
+    )}
 
   </div>
   <div className= "flex items-center lg:hidden">
@@ -192,18 +189,19 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
                   {isAuthenticated ? (
                       <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>
                   ) : (
-                      loginItems.map(({ buttonVariant, name }) => (
-                          <LoginLink key={name} className= "w-full max-w-xs">>
-                            <Button block variant={buttonVariant}>{name}</Button>
+                        <>
+                          <LoginLink  className= "w-full max-w-xs">
+                            <Button block variant={loginButton.buttonVariant}>{loginButton.name}</Button>
                           </LoginLink>
-                      )),
-                          loginItems.map(({ buttonVariant, name }) => (
-                              <RegisterLink key={name} className= "w-full max-w-xs">
-                                <Button block variant={buttonVariant}>{name}</Button>
-                              </RegisterLink>
 
-                          ))
-                  )}
+
+                              <RegisterLink  className= "w-full max-w-xs">
+                                <Button block variant={registerButton.buttonVariant}>{registerButton.name}</Button>
+                              </RegisterLink>
+</>
+
+)}
+
 
                 </nav>
               </div>
@@ -213,4 +211,4 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 );
 };
 
-export default Header;
+// export default Header;

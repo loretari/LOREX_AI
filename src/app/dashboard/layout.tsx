@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Sora, Space_Grotesk } from "next/font/google";
 import "../globals.css";
-import Header from "../sections/Header";
-import HeaderServer from "../server/HeaderServer";
-import {DashboardHeaderServer} from "../../server/DashboardHeaderServer";
+import Header from "../../sections/Header";
+import HeaderServer from "../../components/server/HeaderServer";
+import {DashboardHeaderServer} from "../../components/server/DashboardHeaderServer";
 import DashboardLayout from "./sections/DashboardLayout";
 import {DashboardNav} from "./components/DashboardNav";
 
