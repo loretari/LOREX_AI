@@ -12,6 +12,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+
 }
 
 
@@ -20,5 +21,5 @@ id String @id @unique
 name String?
 email String @unique
 stripeCustomerId String? @unique
-colorScheme String @default("theme-fuchsia")
+colorScheme String @default("fuchsia-400")
 }

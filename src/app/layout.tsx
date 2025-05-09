@@ -6,6 +6,8 @@ import HeaderServer from "../server/HeaderServer";
 
 
 
+
+
 const soraFont = Sora({
     subsets: ["latin-ext"],
     variable: "--font-sora",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
     description: "Created by Frontend Tribe",
 };
 
+
 export default function RootLayout({
                                        children,
                                    }: Readonly<{
@@ -30,7 +33,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body
-            className= {`${soraFont.variable} ${spaceGroteskFont.variable} antialiased bg-gray-900 text-gray-300 font-body`}
+            className= {`${soraFont.variable} ${spaceGroteskFont.variable}  antialiased bg-gray-900 text-gray-300 font-body`}
         >
         {/*<HeaderServer/>*/}
         {children}
