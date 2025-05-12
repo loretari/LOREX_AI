@@ -42,28 +42,49 @@ async function getData(userId: string) {
 
 }
 
-export default async function RootLayout({
-                                       children,
-                                   }: Readonly<{
-    children: React.ReactNode;
-}>) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const data = await getData(user?.id as string);
+
     return (
-        <html lang="en">
-        <body
-            className= {`${soraFont.variable} ${spaceGroteskFont.variable}  ${data?.colorScheme} antialiased bg-gray-900 text-gray-300 font-body`}
-        >
-            <DashboardHeaderServer/>
-        <div className= "flex-1">
-            <DashboardLayout>
-                {children}
-            </DashboardLayout>
-        </div>
-        </body>
-        </html>
+      <div
+        lang="en"
+        className={`${soraFont.variable} ${spaceGroteskFont.variable} ${data?.colorScheme} antialiased bg-gray-900 text-gray-300 font-body`}
+      >
+          <DashboardHeaderServer />
+          <div className="flex-1">
+              <DashboardLayout>
+                  {children}
+              </DashboardLayout>
+          </div>
+      </div>
     );
 }
+
+
+// export default async function Layout({
+//                                        children,
+//                                    }: Readonly<{
+//     children: React.ReactNode;
+// }>) {
+//     const { getUser } = getKindeServerSession();
+//     const user = await getUser();
+//     const data = await getData(user?.id as string);
+//     return (
+//         <html lang="en">
+//         <body
+//             className= {`${soraFont.variable} ${spaceGroteskFont.variable}  ${data?.colorScheme} antialiased bg-gray-900 text-gray-300 font-body`}
+//         >
+//             <DashboardHeaderServer/>
+//         <div className= "flex-1">
+//             <DashboardLayout>
+//                 {children}
+//             </DashboardLayout>
+//         </div>
+//         </body>
+//         </html>
+//     );
+// }
 
 

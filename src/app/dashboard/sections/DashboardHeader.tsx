@@ -1,21 +1,16 @@
 "use client";
-import logo from '../assets/images/logo_233.png'
-import {Image} from "next/dist/client/image-component";
+
 import { Button, ButtonProps } from '../../../components/Buttons';
-import {string} from "prop-types";
-import {satisfies} from "next/dist/lib/semver-noop";
 import {useState} from "react";
 import { Orbit } from "../../../components/Orbit";
 import { twMerge } from 'tailwind-merge';
 import {Logo} from "../../../components/Logo";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import UserNav from "../components/UserNav";
-import {DashboardNav} from "../components/DashboardNav";
 import {CreditCard, DoorClosed, Home, Settings} from "lucide-react";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 import {cn} from "../../../lib/utils";
-import {DropdownMenuItem} from "../../../components/ui/dropdown-menu";
 import {KindeUser} from "@kinde-oss/kinde-auth-nextjs";
 
 
