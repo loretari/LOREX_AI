@@ -42,7 +42,7 @@ export const navItems:  NavItem[] = [
         icon: Settings,
     },
     {
-        name: "Billing",
+        name: "Page",
         href: "/dashboard/billing",
         icon: CreditCard,
     },

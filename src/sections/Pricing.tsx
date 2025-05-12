@@ -8,48 +8,105 @@ import {number, string} from "prop-types";
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
+// export const pricingTiers = [
+//   {
+//     title: "Basic",
+//     description: "AI chatbot, personalized recommendations",
+//     price: "Free",
+//     buttonText: "Get Started",
+//     buttonVariant: 'secondary',
+//     features: [
+//       "Access to AI chatbot for natural language conversations",
+//       "Basic task automation for simple workflows",
+//       "Limited message history storage",
+//     ],
+//     color: "amber",
+//     className: "lg:py-12 lg:my-6",
+//   },
+//   {
+//     title: "Premium",
+//     description: "Advanced AI capabilities for enhanced productivity",
+//     price: 99,
+//     buttonText: "Upgrade to Premium",
+//     buttonVariant: 'secondary',
+//     features: [
+//       "All Basic features included",
+//       "Priority access to new AI features and updates",
+//       "Advanced automation tools for seamless task management",
+//       "Customizable chat templates for your specific workflows",
+//     ],
+//     color: "violet",
+//     className: "lg:py-18 lg:my-0",
+//   },
+//   {
+//     title: "Enterprise",
+//     description: "Custom AI chatbot, advanced analytics, dedicated account",
+//     price: null,
+//     buttonText: "Contact Us",
+//     buttonVariant: "primary",
+//     features: [
+//       "All Premium features included",
+//       "Dedicated account manager and priority customer support",
+//       "Enhanced security and compliance features for large teams",
+//       "Custom AI models tailored to your organization's needs",
+//       "API access for seamless integration with enterprise systems",
+//     ],
+//     color: "teal",
+//     className: "lg:py-12 lg:my-6",
+//   },
+// ] satisfies {
+//   title: string;
+//   description: string;
+//   price: string | number | null;
+//   buttonText: string;
+//   buttonVariant?: ButtonProps['variant'];
+//   features: string[];
+//   color: string;
+//   className: string;
+// }[];
+
+
 export const pricingTiers = [
   {
-    title: "Basic",
-    description: "AI chatbot, personalized recommendations",
-    price: "Free",
-    buttonText: "Get Started",
+    title: "Mini",
+    description: "Puikiai tinka greitam testavimui ar startui",
+    price: 15,
+    buttonText: "Užsakyti Mini",
     buttonVariant: 'secondary',
     features: [
-      "Access to AI chatbot for natural language conversations",
-      "Basic task automation for simple workflows",
-      "Limited message history storage",
+      "1 modelis su tavo drabužių komplektu",
+      "Neutralus fonas",
+      "Greitas pateikimas (1–2 d.d.)",
     ],
     color: "amber",
     className: "lg:py-12 lg:my-6",
   },
   {
-    title: "Premium",
-    description: "Advanced AI capabilities for enhanced productivity",
-    price: 99,
-    buttonText: "Upgrade to Premium",
+    title: "Standartinis",
+    description: "Optimalus pasirinkimas pardavimų puslapiui ar kolekcijai",
+    price: 30,
+    buttonText: "Užsakyti Standartinį",
     buttonVariant: 'secondary',
     features: [
-      "All Basic features included",
-      "Priority access to new AI features and updates",
-      "Advanced automation tools for seamless task management",
-      "Customizable chat templates for your specific workflows",
+      "2–3 modeliai su tavo drabužiais",
+      "Skirtingi fono pasirinkimai",
+      "Pagrindinis koregavimas pagal pageidavimus",
+      "Pateikimas per 2–4 d.d.",
     ],
     color: "violet",
     className: "lg:py-18 lg:my-0",
   },
   {
-    title: "Enterprise",
-    description: "Custom AI chatbot, advanced analytics, dedicated account",
+    title: "Individualus",
+    description: "Tobulas sprendimas kolekcijoms ar unikaliems projektams",
     price: null,
-    buttonText: "Contact Us",
+    buttonText: "Susisiekti dėl užsakymo",
     buttonVariant: "primary",
     features: [
-      "All Premium features included",
-      "Dedicated account manager and priority customer support",
-      "Enhanced security and compliance features for large teams",
-      "Custom AI models tailored to your organization's needs",
-      "API access for seamless integration with enterprise systems",
+      "5+ modelių generavimas",
+      "Derinimas prie prekės ženklo stiliaus",
+      "Sudėtingi pageidavimai: pozos, fonai, stilius",
+      "Konsultacija ir individualus pasiūlymas",
     ],
     color: "teal",
     className: "lg:py-12 lg:my-6",
@@ -64,6 +121,7 @@ export const pricingTiers = [
   color: string;
   className: string;
 }[];
+
 
 export const Pricing = () => {
   return <section id= "kainodara">
