@@ -16,26 +16,23 @@ datasource db {
 }
 
 model User {
-  id               String   @id @unique
+  id               String        @id @unique
   name             String?
-  email            String   @unique
-  stripeCustomerId String?  @unique
-  colorScheme      String   @default("fuchsia-400")
-  Payment          Payment?
+  email            String        @unique
+  stripeCustomerId String?       @unique
+  colorScheme      String        @default("fuchsia-400")
+  Payment          Payment[]
 }
 
 
-
 model Payment {
-stripePaymentId      String @id @unique
-interval             String
-status               String
-planId               String
-currentPeriodStart   Int
-curentPeriondEnd     Int
-createdAt            DateTime    @default(now())
-updatedAt            DateTime    @updatedAt
-user                 User        @relation(fields: [userId], references: [id])
-userId               String      @unique
+  id                   String      @id @default(uuid())
+  stripePaymentId      String      @unique
+  status               String
+  amount               Int
+  currency             String      @default("eur")
+  createdAt            DateTime    @default(now())
+  user                 User        @relation(fields: [userId], references: [id])
+  userId               String
 
 }

@@ -10,6 +10,7 @@ import {prisma} from "../lib/prisma";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 
 
+
 const soraFont = Sora({
     subsets: ["latin-ext"],
     variable: "--font-sora",
@@ -46,6 +47,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const data = await getData(user?.id as string);
+
+
 
     return (
       <div
