@@ -13,30 +13,30 @@ import { TrashDelete } from "./components/SubmitButtons";
 
 
 async function getData(userId: string) {
-  // const data = await prisma.note.findMany({
-  //   where: {
-  //     userId: userId,
-  //   },
-  //       orderBy: {
-  //         createdAt: "desc",
-  //       },
-  //
-  // });
-
-  const data = await prisma.user.findUnique({
+  const data = await prisma.note.findMany({
     where: {
-      id: userId,
+      userId: userId,
     },
-    select: {
-      Notes: true,
-      Payment: {
-        select: {
-          status: true,
-        }
-      }
-    }
+        orderBy: {
+          createdAt: "desc",
+        },
 
-  })
+  });
+
+  // const data = await prisma.user.findUnique({
+  //   where: {
+  //     id: userId,
+  //   },
+  //   select: {
+  //     Notes: true,
+  //     Payment: {
+  //       select: {
+  //         status: true,
+  //       }
+  //     }
+  //   }
+  //
+  // })
 
   return data;
 }
@@ -74,10 +74,25 @@ export default async function DashboardPage() {
             </Button>
             </Link>
 
+            {/*{data?.Payment?.status === 'active' ? (*/}
+            {/*    <Link href= "/dashboard/new">*/}
+            {/*  <Button>*/}
+            {/*    Sukurti naują įrašą*/}
+            {/*</Button>*/}
+            {/*</Link>*/}
+            {/*) : (*/}
+            {/*<Link href= "/dashboard/billing">*/}
+            {/*<Button>*/}
+            {/*    Sukurti naują įrašą*/}
+            {/*</Button>*/}
+            {/*</Link>*/}
+            {/*)}*/}
+
 
           </div>
 
-          {data?.Notes.length == 0 ? (
+          {/*{data?.Notes.length == 0 ? (*/}
+            {data.length < 1 ? (
             <div className= "flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
               <div className= "flex h-20 w-20 items-center justify-center rounded-full bg-secondary/10 hover:bg-popover-foreground">
                 <File className= "w-10 h-10 text-violet-400" />
@@ -96,10 +111,26 @@ export default async function DashboardPage() {
                 </Button>
               </Link>
 
+
+              {/*{data?.Payment?.status === 'active' ? (*/}
+              {/*  <Link href= "/dashboard/new">*/}
+              {/*    <Button>*/}
+              {/*      Sukurti naują įrašą*/}
+              {/*    </Button>*/}
+              {/*  </Link>*/}
+              {/*) : (*/}
+              {/*  <Link href= "/dashboard/billing">*/}
+              {/*    <Button>*/}
+              {/*      Sukurti naują įrašą*/}
+              {/*    </Button>*/}
+              {/*  </Link>*/}
+              {/*)}*/}
+
             </div>
           ) : (
             <div className= "flex flex-col gap-y-8">
-              {data?.Notes.map((item) => (
+              {/*{data?.Notes.map((item) => (*/}
+                {data.map((item) => (
                 <Card
                 key={item.id}
                 className= "flex items-center justify-between px-4 bg-primary border-gradient "
