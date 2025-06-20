@@ -7,6 +7,7 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
+
 }
 
 datasource db {
@@ -22,6 +23,7 @@ model User {
   stripeCustomerId String?       @unique
   colorScheme      String        @default("fuchsia-400")
   Payment          Payment[]
+  Notes            Note[]
 }
 
 
@@ -35,4 +37,16 @@ model Payment {
   user                 User        @relation(fields: [userId], references: [id])
   userId               String
 
+}
+
+model Note {
+  id                  String       @id @default(uuid())
+  title               String
+  description         String
+
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  User                User?        @relation(fields: [userId], references: [id])
+  userId              String?
 }

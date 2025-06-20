@@ -124,12 +124,12 @@
 // }
 
 
-import {Card, CardContent} from "../../../components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card";
 import {CheckCircle2} from "lucide-react";
-import {Button} from "../../../components/Buttons";
+import { StripePortal } from "../components/SubmitButtons";
 import {prisma} from "../../lib/prisma";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
-import {getStripeSession} from "../../lib/stripe";
+import { getStripeSession, stripe } from "../../lib/stripe";
 import {redirect} from "next/navigation";
 import {StripePaymentCreationButton} from "../components/SubmitButtons";
 
@@ -142,45 +142,45 @@ const featureItems = [
     {name: "Lorem ipsum something"},
     {name: "Lorem ipsum something"},
 ]
-async function getData(userId: string) {
-
-    const data = await prisma.user.findUnique({
-        where: {
-            id: userId,
-        },
-        select: {
-            name: true,
-            email: true,
-            colorScheme: true,
-        },
-    });
-
-    return data;
-}
-
-
 // async function getData(userId: string) {
 //
-//     const data = await prisma.payment.findUnique({
+//     const data = await prisma.user.findUnique({
 //         where: {
-//             userId: userId,
+//             id: userId,
 //         },
 //         select: {
-//             status: true,
-//             userId: true,
-//             currentPeriodStart: true,
-//             currentPeriodEnd: true,
-//             planId: true,
-//             user: {
-//                 select: {
-//                     stripeCustomerId: true,
-//                 },
-//             },
+//             name: true,
+//             email: true,
+//             colorScheme: true,
 //         },
 //     });
-//     console.log(data)
+//
 //     return data;
 // }
+
+
+async function getData(userId: string) {
+
+    const data = await prisma.payment.findFirst({
+        where: {
+            userId: userId,
+        },
+        select: {
+            status: true,
+            userId: true,
+            createdAt: true,
+            amount: true,
+            currency: true,
+            user: {
+                select: {
+                    stripeCustomerId: true,
+                },
+            },
+        },
+    });
+    console.log(data)
+    return data;
+}
 
 export default async function BillingPage() {
     const {getUser} = getKindeServerSession();
@@ -194,6 +194,8 @@ export default async function BillingPage() {
     const data = await getData(user?.id as string);
     // const data = await getData(user.id);
 // console.log(data)
+
+
     async function createPayment() {
         "use server";
         const dbUser = await prisma.user.findUnique({
@@ -225,7 +227,55 @@ export default async function BillingPage() {
             console.log("Payment URL:", paymentUrl);
             return redirect(paymentUrl);
     }
+    console.log("Payment data:", data);
 
+    async function createCustomerPortal() {
+        "use server";
+        const session = await stripe.billingPortal.sessions.create({
+            customer: data?.user.stripeCustomerId as string,
+            return_url: "http://localhost:3000/dashboard",
+
+        });
+
+        return redirect(session.url);
+    }
+
+
+  if (data?.status === 'succeeded') {
+      return (
+          <div className= "grid items-start gap-8">
+              <div className= "flex items-center justify-between px-2">
+                  <div className= "grid gap-1">
+                      <h1 className="text-3xl md:text-4xl font-semibold">Mokėjimas sėkmingas!</h1>
+                      <p className="text-lg text-muted-foreground">
+                          Gavome tavo užsakymą. Tavo nuotraukos šiuo metu generuojamos — tai gali užtrukti iki dviejų dienų.
+                          Apie paruoštas nuotraukas informuosime el. paštu arba galėsi jas rasti savo paskyroje.
+                      </p>
+                  </div>
+              </div>
+
+
+              <Card className= "w-full lg:w-2/3">
+                  <CardHeader>
+                      <CardTitle>Keisti savo užsakymą</CardTitle>
+                      <CardDescription>
+                          Spustelėkite žemiau esantį mygtuką, kad galėtumėte
+                          pakeisti mokėjimo informaciją ir tuo pačiu peržiūrėti savo ataskaitą
+                      </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      <form action={createCustomerPortal}>
+                          <StripePortal />
+                      </form>
+                  </CardContent>
+              </Card>
+
+          </div>
+
+
+        )
+
+  }
 
 
 
