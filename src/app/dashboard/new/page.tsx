@@ -16,6 +16,29 @@ import { redirect } from "next/navigation";
 export default async function NewNoteRoute() {
   const {getUser} = getKindeServerSession();
   const user = await getUser();
+  //
+  // if (!user) {
+  //   redirect('/login');
+  // }
+  //
+  // const data = await prisma.user.findUnique({
+  //   where: {
+  //     id: user.id,
+  //   },
+  //   select: {
+  //     Payment: {
+  //       select: {
+  //         status: true,
+  //       }
+  //     }
+  //   }
+  // });
+  //
+  // console.log("Mokėjimo būsena:", payment);
+  //
+  // if (data?.Payment?.status !== 'active') {
+  //   redirect('/dashboard/billing');
+  // }
 
   async function postData(formData : FormData) {
     "use server";
@@ -24,6 +47,15 @@ export default async function NewNoteRoute() {
       throw new Error("Norėdami tęsti, prisijunkite prie savo paskyros.");
     }
 
+    // const paymentStatus = await prisma.payment.findFirst({
+    //   where: {
+    //     userId: user.id
+    //   }
+    // });
+    //
+    // if (paymentStatus?.status !== 'active') {
+    //   throw new Error ("Jūs nesate užsakęs palsaugos, dėl to negalite kurti įrašų")
+    // }
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;

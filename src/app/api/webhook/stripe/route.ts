@@ -5,7 +5,6 @@ import { prisma } from "../../../lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 
-
 export async function POST(req: Request) {
   console.log("🔵 Stripe webhook endpoint hit");
 
@@ -29,10 +28,13 @@ export async function POST(req: Request) {
   }
   console.log("⚡️ Event type:", event.type);
 
+  //
+  // let user = null;
+  // let session: any = null;
 
   if(event.type === 'checkout.session.completed') {
 
-    const session = event.data.object as Stripe.Checkout.Session;
+     const session = event.data.object as Stripe.Checkout.Session;
     console.log('✅ Checkout session completed:', session);
 
     console.log(`Payment was successful for user`)
@@ -92,7 +94,9 @@ export async function POST(req: Request) {
           userId: user.id,
           amount: paymentIntent.amount,
           status: paymentIntent.status,
-          currency: paymentIntent.currency,
+          // status: 'active',
+          currency: paymentIntent.currency
+          ,
           // planId: item.price?.id,
           // interval: item.price?.recurring?.interval || null,
           // currentPeriodStart: null,
@@ -102,9 +106,9 @@ export async function POST(req: Request) {
       console.log("💾 Payment recorded in DB");
     // } else {
     //   console.warn("⚠️ paymentIntent is still null after attempting to retrieve it.");
-    // }
+    }
 
-  }
+
 
 
 
@@ -130,6 +134,59 @@ export async function POST(req: Request) {
   //   });
   //
   // }
+
+  // } else if (event.type === 'invoice.payment_succeeded') {
+  //    session = event.data.object;
+  //
+  //   const customerId = session.customer as string;
+  //
+  //    user = await prisma.user.findUnique({
+  //     where: {
+  //       stripeCustomerId: customerId,
+  //     }
+  //   });
+  //
+  //   if (!user) {
+  //     console.log("❌ User not found for invoice event");
+  //     throw new Response("Vartotojas nerastas pagal nurodytus duomenis", { status: 404 });
+  //   }
+  //
+  //   await prisma.payment.create ({
+  //     data: {
+  //       userId: user.id,
+  //       status: 'active',
+  //       amount: session.amount_paid,
+  //       currency: session.currency,
+  //     }
+  //   });
+  //   console.log('✅ Mokėjimas įrašytas kaip aktyvus')
+  // }
+
+  // if (user && session) {
+  //   const existing = await prisma.payment.findFirst({
+  //     where: {
+  //       userId: user.id,
+  //       amount: session.amount_paid,
+  //       currency: session.currency,
+  //       createdAt: {
+  //         gte: new Date(Date.now() - 1000 * 60 * 2),
+  //       },
+  //     },
+  //   });
+  //
+  //   if (!existing) {
+  //     await prisma.payment.create({
+  //       data: {
+  //         userId: user.id,
+  //         status: 'active',
+  //         amount: session.amount_paid,
+  //         currency: session.currency,
+  //       },
+  //     });
+  //     console.log("🆕 Dubliuotas mokėjimas įrašytas iš fallback");
+  //   }
+  // }
+
 
 
   return new Response(null, { status: 200 });

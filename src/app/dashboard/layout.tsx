@@ -11,6 +11,7 @@ import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 
 
 
+
 const soraFont = Sora({
     subsets: ["latin-ext"],
     variable: "--font-sora",

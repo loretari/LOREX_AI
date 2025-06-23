@@ -3,6 +3,7 @@ import DashboardHeader from "../../app/dashboard/sections/DashboardHeader";
 import {redirect} from "next/navigation";
 import {prisma} from "../../app/lib/prisma";
 import {stripe} from "../../app/lib/stripe";
+import {unstable_noStore as noStore} from "next/cache";
 
 
 async function getData({
