@@ -132,6 +132,7 @@ import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import { getStripeSession, stripe } from "../../lib/stripe";
 import {redirect} from "next/navigation";
 import {StripePaymentCreationButton} from "../components/SubmitButtons";
+import {unstable_noStore as noStore} from "next/cache";
 
 
 
@@ -161,6 +162,7 @@ const featureItems = [
 
 async function getData(userId: string) {
 
+    noStore();
     const data = await prisma.payment.findFirst({
         where: {
             userId: userId,

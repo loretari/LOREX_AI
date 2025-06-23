@@ -8,10 +8,11 @@ import { SubmitButton } from "../../components/SubmitButtons";
 import { prisma } from "../../../lib/prisma";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import {revalidatePath, unstable_noStore as noStore} from "next/cache";
 
 
 async function getData({ userId, noteId } : { userId: string; noteId: string }) {
+  noStore();
   const data = await prisma.note.findUnique({
     where: {
       id: noteId,

@@ -8,8 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { Button } from "../../components/Buttons";
 import { Card } from "../../components/ui/card";
-import { revalidatePath } from "next/cache";
 import { TrashDelete } from "./components/SubmitButtons";
+import {revalidatePath, unstable_noStore as noStore} from "next/cache";
 
 
 async function getData(userId: string) {
@@ -22,7 +22,7 @@ async function getData(userId: string) {
   //       },
   //
   // });
-
+  noStore();
   const data = await prisma.user.findUnique({
     where: {
       id: userId,

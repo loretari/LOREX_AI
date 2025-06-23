@@ -22,6 +22,8 @@ async function getData({
 
     console.log("🔍 getData called with:", { email, id, firstName, lastName });
 
+
+    noStore();
    let user = await prisma.user.findUnique({
      where: {
          id: id
