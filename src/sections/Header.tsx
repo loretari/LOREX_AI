@@ -79,7 +79,7 @@ export const Header = ({ isAuthenticated } : {isAuthenticated: boolean}) => {
 const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   return (
       <>
-      <header className= "border-b border-gray-200/20 relative z-40">
+      <header className= " fixed top-0 left-0 right-0 border-b border-gray-200/20 z-50 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60">
         <div className= "container">
          <div className= "h-18 lg:h-20  flex justify-between items-center ">
           <div className= "flex gap-4 items-center">

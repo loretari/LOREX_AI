@@ -12,12 +12,22 @@ import { HeaderServer } from "../components/server/HeaderServer";
 export default function Home() {
   return <div>
     <HeaderServer />
+    <main>
     <Hero />
     <Companies />
-    <Features />
-    <Pricing />
-    <Testimonials />
-    <CallToAction />
-    <Footer />
+      <section id= "paslaugos" className= "scroll-mt-20">
+        <Features />
+      </section>
+      <section id= "kainodara" className= "scroll-mt-20">
+        <Pricing />
+      </section>
+      <section id= "atsiliepimai" className= "scroll-mt-20">
+        <Testimonials />
+      </section>
+      <section id= "susisiekite" className= "scroll-mt-20">
+        <CallToAction />
+      </section>
+       <Footer />
+    </main>
   </div>;
 }
