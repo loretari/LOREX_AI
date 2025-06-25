@@ -94,7 +94,6 @@ export async function POST(req: Request) {
           userId: user.id,
           amount: paymentIntent.amount,
           status: paymentIntent.status,
-          // status: 'active',
           currency: paymentIntent.currency
           ,
           // planId: item.price?.id,

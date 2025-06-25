@@ -79,11 +79,13 @@ export const DashboardHeader = ({
             <header className= "border-b border-gray-200/20 relative z-40">
                 <div className= "container">
                     <div className= "h-18 lg:h-20  flex justify-between items-center ">
-                        <div className= "flex gap-4 items-center">
+                        <Link href= "/">
+                        <div className= "flex gap-4 items-center cursor-pointer">
                             {/*<Image src= {logo} />*/}
                             <Logo />
-                            <div className= "font-extrabold text-2xl">LorexAI</div>
+                            <div className= "font-extrabold text-2xl hover:text-purple-500 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300">LorexAI</div>
                         </div>
+                        </Link>
                         {/*<div className= "h-full hidden lg:block">*/}
                             {/*<nav className= "h-full">*/}
                             {/*    {navItems.map(({ name, href }) => (*/}

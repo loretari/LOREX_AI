@@ -6,6 +6,7 @@ import { Orbit } from "../components/Orbit";
 import { twMerge } from 'tailwind-merge';
 import {Logo} from "../components/Logo";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import Link from "next/link";
 
 
 
@@ -82,18 +83,20 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
       <header className= " fixed top-0 left-0 right-0 border-b border-gray-200/20 z-50 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60">
         <div className= "container">
          <div className= "h-18 lg:h-20  flex justify-between items-center ">
-          <div className= "flex gap-4 items-center">
+           <Link href= "/">
+          <div className= "flex gap-4 items-center ">
     {/*<Image src= {logo} />*/}
     <Logo />
-    <div className= "font-extrabold text-2xl">LorexAI</div>
+    <div className= "font-extrabold text-3xl hover:text-purple-500 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300">LorexAI</div>
   </div>
+           </Link>
   <div className= "h-full hidden lg:block">
-      <nav className= "h-full">
+      <nav className= "h-full ">
         {navItems.map(({ name, href }) => (
           <a
               href={href}
               key={name}
-              className= "h-full px-8 relative font-bold text-xs tracking-widest whitespace-nowrap text-gray-400 uppercase inline-flex items-center before:content-[''] before:absolute before:bottom-0 before:h-2 before:w-px before:bg-gray-200/20 before:left-0  last:after:absolute last:after:bottom-0 last:after:h-2 last:after:w-px last:after:bg-gray-200/20 last:after:right-0 "
+              className= "h-full px-8 relative font-bold text-sm tracking-widest whitespace-nowrap text-gray-400 uppercase inline-flex items-center before:content-[''] before:absolute before:bottom-0 before:h-2 before:w-px before:bg-gray-200/20 before:left-0  last:after:absolute last:after:bottom-0 last:after:h-2 last:after:w-px last:after:bg-gray-200/20 last:after:right-0 text-gray-400 hover:text-fuchsia-400 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300"
               onClick={(e) => {
                 e.preventDefault();
                 const element = document.querySelector(href);
@@ -110,7 +113,16 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   </div>
   <div className= "hidden lg:flex gap-4">
     {isAuthenticated ? (
-            <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>
+      <>
+      <Link href= "/dashboard">
+        <Button variant = "secondary" className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-700 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95">Grįžti į savo paskyrą</Button>
+      </Link>
+
+
+            <LogoutLink>
+              <Button variant= "primary">Atsijungti</Button>
+            </LogoutLink>
+      </>
         ) : (
             <>
               <LoginLink >
@@ -187,7 +199,15 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
                       >{name}</a>
                   ))}
                   {isAuthenticated ? (
-                      <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>
+                    <>
+                      <Link href= "/dashboard">
+                        <Button variant= "secondary" className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-500 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95">Grįžti į savo paskyrą</Button>
+                      </Link>
+
+                      <LogoutLink>
+                        <Button variant= "primary">Atsijungti</Button>
+                      </LogoutLink>
+                    </>
                   ) : (
                         <>
                           <LoginLink  className= "w-full max-w-xs">

@@ -6,9 +6,9 @@ export const HeaderServer = async () => {
     const {isAuthenticated} = getKindeServerSession();
 
     const authenticated = await isAuthenticated();
-      if ( authenticated) {
-    redirect('/dashboard');
-}
+//       if ( authenticated) {
+//     redirect('/dashboard');
+// }
 
     return (
         <Header isAuthenticated={authenticated}/>

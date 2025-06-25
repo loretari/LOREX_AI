@@ -9,7 +9,11 @@ import { Footer } from "../sections/Footer";
 import { HeaderServer } from "../components/server/HeaderServer";
 
 
+
 export default function Home() {
+
+
+
   return <div>
     <HeaderServer />
     <main>

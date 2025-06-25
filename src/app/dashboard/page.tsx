@@ -40,6 +40,10 @@ async function getData(userId: string) {
         },
   },
       Payment: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
         select: {
           status: true,
         }
@@ -56,6 +60,7 @@ export default async function DashboardPage() {
   const user = await getUser();
   const data = await getData(user?.id as string);
   const firstPayment = data?.Payment?.[0];
+
 
   async function deleteNote(formData: FormData) {
     "use server"
@@ -87,7 +92,7 @@ export default async function DashboardPage() {
 
 
             {/*{data?.Payment?.status === 'active' ? (*/}
-            {firstPayment?.status === 'active' ? (
+            {firstPayment?.status === 'succeeded' ? (
                 <Link href= "/dashboard/new">
               <Button>
                 Sukurti naują įrašą
@@ -125,7 +130,7 @@ export default async function DashboardPage() {
               {/*</Link>*/}
 
 
-              {data?.Payment?.status === 'active' ? (
+              {data?.Payment?.status === 'succeeded' ? (
                 <Link href= "/dashboard/new">
                   <Button>
                     Sukurti naują įrašą

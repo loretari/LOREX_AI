@@ -243,7 +243,7 @@ export default async function BillingPage() {
     }
 
 
-  if (data?.status === 'active') {
+  if (data?.status === 'succeeded') {
       return (
           <div className= "grid items-start gap-8">
               <div className= "flex items-center justify-between px-2">

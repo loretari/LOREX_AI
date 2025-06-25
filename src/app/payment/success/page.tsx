@@ -15,7 +15,7 @@
                      </div>
 
                      <div className= "mt-3 text-center sm:mt-5 w-full">
-                         <h3 className= "text-lg leading-6 font-medium">Payment Successfull</h3>
+                         <h3 className= "text-lg leading-6 font-medium">Payment Successful</h3>
                          <div className= "mt-2">
                            <p className= "text-sm text-muted-foreground" >Congrats on your payment, please check your email for further instructions>
                            </p>
