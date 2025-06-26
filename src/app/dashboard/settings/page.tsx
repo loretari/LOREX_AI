@@ -18,6 +18,7 @@ import {revalidatePath, unstable_noStore as noStore} from "next/cache";
 import { redirect } from "next/navigation";
 
 
+
 async function getData(userId: string) {
     noStore();
     const data = await prisma.user.findUnique({
@@ -41,7 +42,6 @@ export default async function SettingPage() {
     if (!user) {
         return redirect("/api/auth/login");
     }
-
 
     const data = await getData(user?.id as string);
 

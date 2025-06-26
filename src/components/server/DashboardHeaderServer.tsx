@@ -115,8 +115,7 @@ export const DashboardHeaderServer = async () => {
     const {isAuthenticated, getUser} = getKindeServerSession();
 
     const authenticated = await isAuthenticated();
-    // if (authenticated) {
-    //     redirect('/dashboard');
+
     const user = await getUser();
 
   if (!user) {

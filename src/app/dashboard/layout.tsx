@@ -12,6 +12,7 @@ import {unstable_noStore as noStore} from "next/cache";
 import { redirect } from "next/navigation";
 
 
+
 const soraFont = Sora({
     subsets: ["latin-ext"],
     variable: "--font-sora",
@@ -52,7 +53,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
     if (!user) {
         return redirect("/api/auth/login");
     }
-
 
     const data = await getData(user?.id as string);
 

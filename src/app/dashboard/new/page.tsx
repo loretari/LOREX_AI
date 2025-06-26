@@ -22,6 +22,7 @@ export default async function NewNoteRoute() {
     return redirect("/api/auth/login");
   }
 
+
   //
   // if (!user) {
   //   redirect('/login');

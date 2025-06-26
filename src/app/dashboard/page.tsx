@@ -13,6 +13,7 @@ import {revalidatePath, unstable_noStore as noStore} from "next/cache";
 import { redirect } from "next/navigation";
 
 
+
 async function getData(userId: string) {
   // const data = await prisma.note.findMany({
   //   where: {
@@ -63,6 +64,7 @@ export default async function DashboardPage() {
   if (!user) {
     return redirect("/api/auth/login");
   }
+
   const data = await getData(user?.id as string);
   const firstPayment = data?.Payment?.[0];
 
