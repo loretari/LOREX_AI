@@ -15,6 +15,7 @@ import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import {Button} from "../../../components/Buttons";
 import {SubmitButton} from "../components/SubmitButtons";
 import {revalidatePath, unstable_noStore as noStore} from "next/cache";
+import { redirect } from "next/navigation";
 
 
 async function getData(userId: string) {
@@ -36,6 +37,12 @@ async function getData(userId: string) {
 export default async function SettingPage() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+
+    if (!user) {
+        return redirect("/api/auth/login");
+    }
+
+
     const data = await getData(user?.id as string);
 
     async function postData(formData: FormData) {

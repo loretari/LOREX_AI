@@ -35,6 +35,11 @@ export default async function DynamicRoute({
 }) {
   const {getUser} = getKindeServerSession()
   const user = await getUser()
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
   const data = await getData({userId: user?.id as string, noteId: params.id});
 
   async function postData(formData: FormData) {

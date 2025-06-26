@@ -10,6 +10,7 @@ import { Button } from "../../components/Buttons";
 import { Card } from "../../components/ui/card";
 import { TrashDelete } from "./components/SubmitButtons";
 import {revalidatePath, unstable_noStore as noStore} from "next/cache";
+import { redirect } from "next/navigation";
 
 
 async function getData(userId: string) {
@@ -58,6 +59,10 @@ async function getData(userId: string) {
 export default async function DashboardPage() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
   const data = await getData(user?.id as string);
   const firstPayment = data?.Payment?.[0];
 

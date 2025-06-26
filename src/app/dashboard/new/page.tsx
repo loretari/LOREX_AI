@@ -17,6 +17,11 @@ export default async function NewNoteRoute() {
   noStore();
   const {getUser} = getKindeServerSession();
   const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
   //
   // if (!user) {
   //   redirect('/login');

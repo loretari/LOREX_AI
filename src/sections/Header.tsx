@@ -115,7 +115,9 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     {isAuthenticated ? (
       <>
       <Link href= "/dashboard">
-        <Button variant = "secondary" className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-700 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95">Grįžti į savo paskyrą</Button>
+        <Button variant = "secondary" className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-700 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95">
+          Grįžti į savo paskyrą
+        </Button>
       </Link>
 
 

@@ -152,7 +152,7 @@ export const Pricing = () => {
             <ul className= "flex flex-col gap-4 mt-8">
               {tier.features.map((feature) => (
                   <li key={feature} className= "border-t border-[var(--color-border)] pt-4 flex gap-4">
-                    <FontAwesomeIcon icon={faCheckCircle} className= "size-6 text-violet-400 flex-shrink-0"/>
+                    <FontAwesomeIcon icon={faCheckCircle} className= "h-6 w-6 text-violet-400 flex-shrink-0"/>
                     <span className= "font-medium">{feature}</span></li>
               ))}
             </ul>

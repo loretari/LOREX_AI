@@ -118,12 +118,14 @@ export const DashboardHeaderServer = async () => {
     // if (authenticated) {
     //     redirect('/dashboard');
     const user = await getUser();
-    if (!user) {
-        return redirect("/")
-    }
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
 
 
-    await getData({
+
+  await getData({
        email: user.email as string,
        firstName: user.given_name as string,
        id: user.id as string,
