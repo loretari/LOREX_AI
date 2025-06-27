@@ -1,12 +1,15 @@
 "use client";
 
 import { Button, ButtonProps } from '../components/Buttons';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import { Orbit } from "../components/Orbit";
 import { twMerge } from 'tailwind-merge';
 import {Logo} from "../components/Logo";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+
 
 
 
@@ -78,6 +81,32 @@ const registerButton: LoginItem = {
 export const Header = ({ isAuthenticated } : {isAuthenticated: boolean}) => {
 
 const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+const [activeSection, setActiveSection] = useState<string>("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      let current = "";
+      navItems.forEach(({ href }) => {
+        const section = document.querySelector(href);
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 120 && rect.bottom >= 120) {
+            current = href;
+          }
+        }
+      });
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+
   return (
       <>
       <header className= " fixed top-0 left-0 right-0 border-b border-gray-200/20 z-50 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60">
@@ -90,13 +119,21 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     <div className= "font-extrabold text-3xl hover:text-purple-500 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300">LorexAI</div>
   </div>
            </Link>
+
   <div className= "h-full hidden lg:block">
       <nav className= "h-full ">
         {navItems.map(({ name, href }) => (
           <a
               href={href}
               key={name}
-              className= "h-full px-8 relative font-bold text-sm tracking-widest whitespace-nowrap text-gray-400 uppercase inline-flex items-center before:content-[''] before:absolute before:bottom-0 before:h-2 before:w-px before:bg-gray-200/20 before:left-0  last:after:absolute last:after:bottom-0 last:after:h-2 last:after:w-px last:after:bg-gray-200/20 last:after:right-0 text-gray-400 hover:text-fuchsia-400 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300"
+              className={twMerge(
+                // "h-full px-8 relative font-bold text-sm tracking-widest whitespace-nowrap text-gray-400 uppercase inline-flex items-center before:content-[''] before:absolute before:bottom-0 before:h-2 before:w-px before:bg-gray-200/20 before:left-0  last:after:absolute last:after:bottom-0 last:after:h-2 last:after:w-px last:after:bg-gray-200/20 last:after:right-0 text-gray-400 hover:text-fuchsia-400 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300",
+                "h-full px-8 relative font-bold text-sm tracking-widest whitespace-nowrap uppercase inline-flex items-center text-gray-400 transition-all duration-300",
+                activeSection === href
+                ? "text-fuchsia-400 drop-shadow-[0_0_6px_rgba(236,72,153,0.5)]"
+                : "hover:text-fuchsia-400 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)]"
+              )}
+
               onClick={(e) => {
                 e.preventDefault();
                 const element = document.querySelector(href);
@@ -111,6 +148,7 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
         ))}
       </nav>
   </div>
+
   <div className= "hidden lg:flex gap-4">
     {isAuthenticated ? (
       <>
@@ -135,13 +173,11 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
               <RegisterLink >
                 <Button variant={registerButton.buttonVariant}>{registerButton.name}</Button>
               </RegisterLink>
-
             </>
     )}
-
   </div>
-  <div className= "flex items-center lg:hidden">
 
+  <div className= "flex items-center lg:hidden">
     <button className= "size-10 rounded-lg border-2 border-transparent [background:linear-gradient(var(--color-gray-950),var(--color-gray-950))_content-box,conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))] _border-box] relative"
             onClick={() => setIsMobileNavOpen((curr) => !curr)}>
       <div className= "absolute top-1/2 left-1/2 -translate-x-1/2
@@ -158,15 +194,13 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
       )}
       ></div>
       </div>
-
     </button>
-
   </div>
 </div>
     </div>
     </header>
-        {isMobileNavOpen && (
 
+        {isMobileNavOpen && (
             <div className= "fixed top-18 left-0 bottom-0 right-0 bg-gray-950 z-30 overflow-hidden">
               <div className= "absolute-center isolate -z-10">
                 <Orbit />
@@ -189,7 +223,11 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
                       <a
                           href= {href}
                           key= {name}
-                          className= "text-gray-400 uppercase tracking-widest font-bold text-xs h-12"
+                          className= {twMerge(
+                            // "text-gray-400 uppercase tracking-widest font-bold text-xs h-12"
+                            "text-xs uppercase tracking-widest font-bold h-12 transition-all",
+                            activeSection === href ? "text-fuchsia-400" : "text-gray-400"
+                          )}
                           onClick={(e) => {
                             e.preventDefault();
                             const element = document.querySelector(href);
@@ -200,6 +238,7 @@ const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
                           }}
                       >{name}</a>
                   ))}
+
                   {isAuthenticated ? (
                     <>
                       <Link href= "/dashboard">

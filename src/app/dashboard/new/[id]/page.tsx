@@ -9,6 +9,7 @@ import { prisma } from "../../../lib/prisma";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import {revalidatePath, unstable_noStore as noStore} from "next/cache";
+import { File } from "buffer";
 
 
 async function getData({ userId, noteId } : { userId: string; noteId: string }) {
@@ -50,6 +51,7 @@ export default async function DynamicRoute({
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
+    const files = formData.getAll("images") as File[];
 
     await prisma.note.update({
       where: {
@@ -59,6 +61,7 @@ export default async function DynamicRoute({
       data: {
         description: description,
         title: title,
+        images: files,
       },
     });
 
@@ -99,6 +102,18 @@ export default async function DynamicRoute({
             />
           </div>
         </CardContent>
+
+        <div className= "gap-y-4 flex flex-col">
+          <Label className= "text-white text-lg">Nuotrauka</Label>
+          <Input
+            type= "file"
+            name= "image"
+            accept= "image/*"
+            multiple
+            placeholder= "Įkelkite nuotraukas, kurios turi būti panaudotus Jūsų užsakymo vykdymui"
+            required
+          />
+        </div>
 
         <CardFooter className= "flex justify-between ">
           <Link href= "/dashboard">
