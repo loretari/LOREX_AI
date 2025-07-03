@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sora, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "../components/ui/sonner";
 import Header from "../sections/Header";
 import HeaderServer from "../server/HeaderServer";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
 
         {/*<HeaderServer/>*/}
         {children}
+        <Toaster richColors closeButton/>
         {/*<Header/>*/}
         </body>
         </html>
