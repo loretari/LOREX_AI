@@ -10,6 +10,7 @@ import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import {revalidatePath, unstable_noStore as noStore} from "next/cache";
 import UppyUploder from "../../uppy/UppyUploader";
+import { Uploader } from "../../components/Uploader";
 
 
 
@@ -117,7 +118,8 @@ export default async function DynamicRoute({
 <CardContent>
         <div className= "gap-y-4 flex flex-col">
           <Label className= "text-white text-lg">Nuotrauka</Label>
-          <UppyUploder noteId={data?.id!} userId={user.id}/>
+          <Uploader/>
+          {/*<UppyUploder noteId={data?.id!} userId={user.id}/>*/}
           {/*<UppyUploader onUploadComplete={(urls) => setImageUrls(urls)}/>*/}
           {/*{imageUrls.map((url, i) => (*/}
           {/*  <input key={i} type= "hidden" name= "imageUrls" value={url}/>*/}

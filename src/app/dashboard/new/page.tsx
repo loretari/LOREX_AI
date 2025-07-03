@@ -90,7 +90,7 @@ export default async function NewNoteRoute() {
 
 
   return (
-    <Card className="mt-20 rounded-2xl border-2 bg-primary border-gradient">
+    <Card className="mt-2 rounded-2xl border-2 bg-primary border-gradient">
 
       <form action={postData}>
 

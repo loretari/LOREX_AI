@@ -10,6 +10,7 @@ import { Button } from "../../../components/Buttons";
 import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
 import { Input } from "../../../components/ui/input";
+import {v4 as uuidv4} from 'uuid';
 
 export function Uploader() {
   const [files, setFiles] = useState<
@@ -23,10 +24,38 @@ export function Uploader() {
        error: boolean;
        objectUrl?: string;
     }>
-    >([])
+    >([]);
+
+  function uploadFile(file: File) {
+    setFiles((prevFiles) =>
+    prevFiles.map((f) =>
+      f.file === file ? { ...f, uploading: true } : f
+    )
+    );
+    
+    try {
+      
+    } catch  {
+      
+    }
+  }
 
   const onDrop = useCallback ((acceptedFiles: File[]) => {
-   console.log(acceptedFiles)
+    if (acceptedFiles.length > 0) {
+      setFiles((prevFiles) => [
+        ...prevFiles,
+          ...acceptedFiles.map((file) => ({
+          id: uuidv4(),
+          file: file,
+          uploading: false,
+          progress: 0,
+          iseDeleting: false,
+          error: false,
+          objectUrl: URL.createObjectURL(file),
+        })),
+      ]);
+    }
+    acceptedFiles.forEach(uploadFile);
   }, []);
 
   const onDropRejected = useCallback ((fileRejections: FileRejection[]) => {
@@ -102,25 +131,37 @@ export function Uploader() {
   });
 
   return (
+    <>
     <Card className={cn(
-      "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64",
-      isDragActive
-        ? "border-primary bg-white/10 border-solid "
-        : "border-border hover:border-primary"
+    "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full h-64",
+    isDragActive
+    ? "border-primary bg-white/10 border-solid "
+    : "border-border hover:border-primary"
     )}
-     {...getRootProps()}
-      >
-      <CardContent className= "flex items-center justify-center h-full w-full ">
-       <Input {...getInputProps()}/>
+    {...getRootProps()}
+    >
+    <CardContent className= "flex items-center justify-center h-full w-full ">
+      <Input {...getInputProps()}/>
       {isDragActive ?
-          <p className= "text-center text-violet-400">Drop the files here ...</p> :
+        <p className= "text-center text-violet-400">Drop the files here ...</p> :
         <div className= "flex flex-col items-center justify-center h-full w-full gap-y-8 ">
           <p >Drag 'n' drop some files here, or click to select files</p>
           <Button className= "text-muted-foreground">Įkelti nuotrauką</Button>
         </div>
 
       }
-      </CardContent>
-    </Card>
+    </CardContent>
+  </Card>
+      <div className= "grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 mt-6">
+        {files.map((file) => (
+            <div key={file.id}>
+              <img src={file.objectUrl} alt={file.file.name }/>
+            </div>
+        )
+          )}
+
+      </div>
+  </>
+
   )
 }
