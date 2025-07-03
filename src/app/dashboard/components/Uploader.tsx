@@ -26,7 +26,7 @@ export function Uploader() {
     }>
     >([]);
 
-  function uploadFile(file: File) {
+  async function uploadFile(file: File) {
     setFiles((prevFiles) =>
     prevFiles.map((f) =>
       f.file === file ? { ...f, uploading: true } : f
@@ -34,7 +34,32 @@ export function Uploader() {
     );
     
     try {
-      
+      const presignedUrlResponse = await fetch("/api/s3/upload", {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          fileName: file.name,
+          contentType: file.type,
+          size: file.size,
+        }),
+      });
+
+      if (!presignedUrlResponse.ok) {
+        toast.error("Failed to get Presigned Url");
+
+        setFiles((prevFiles) =>
+          prevFiles.map((f) =>
+          f.file === file
+            ? { ...f, uploading: false, progress: 0, error: true }
+            : f
+          )
+        );
+
+        return;
+      }
+
+      const { presignedUrl, key } = await presignedUrlResponse.json()
+
     } catch  {
       
     }
