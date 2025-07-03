@@ -11,17 +11,26 @@ import { prisma } from "../../lib/prisma";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import { unstable_noStore as noStore} from "next/cache";
-import { File } from "buffer";
+import UppyUploder from "../uppy/UppyUploader";
+import FileUploader from "../uppy/FileUploader";
+import { red } from "next/dist/lib/picocolors";
+import { Uploader } from "../components/Uploader";
+
+
+
+
 
 
 export default async function NewNoteRoute() {
   noStore();
+
   const {getUser} = getKindeServerSession();
   const user = await getUser();
 
   if (!user) {
     return redirect("/api/auth/login");
   }
+
 
 
   //
@@ -51,9 +60,6 @@ export default async function NewNoteRoute() {
   async function postData(formData : FormData) {
     "use server";
 
-    if (!user) {
-      throw new Error("Norėdami tęsti, prisijunkite prie savo paskyros.");
-    }
 
     // const paymentStatus = await prisma.payment.findFirst({
     //   where: {
@@ -67,18 +73,19 @@ export default async function NewNoteRoute() {
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const files = formData.getAll("images") as File[];
+    const images = formData.getAll("images") as string[];
 
     await prisma.note.create({
       data: {
         userId: user?.id,
         description: description,
         title: title,
-        images: files,
+        images: images,
       },
     });
 
     return redirect('/dashboard');
+
   }
 
 
@@ -115,14 +122,29 @@ export default async function NewNoteRoute() {
 
           <div className= "gap-y-4 flex flex-col">
             <Label className= "text-white text-lg">Nuotrauka</Label>
-            <Input
-              type= "file"
-              name= "image"
-              accept= "image/*"
-              multiple
-              placeholder= "Įkelkite nuotraukas, kurios turi būti panaudotus Jūsų užsakymo vykdymui"
-              required
-            />
+            {/*<Input*/}
+            {/*  type= "file"*/}
+            {/*  name= "image"*/}
+            {/*  accept= "image/*"*/}
+            {/*  multiple*/}
+            {/*  placeholder= "Įkelkite nuotraukas, kurios turi būti panaudotus Jūsų užsakymo vykdymui"*/}
+            {/*  required*/}
+            {/*/>*/}
+            {/*<div className="max-w-2xl mx-auto flex min-h-screen flex-col items-center justify-center ">*/}
+            {/*  <h1 className="text-white text-4xl font-bold pb-10">Upload your Files with S3 📂</h1>*/}
+              <Uploader />
+            {/*</div>*/}
+
+
+            {/*<UppyUploder userId={user.id}/>*/}
+            {/*<FileUploader*/}
+            {/*  onUploaded={(urls) => {*/}
+            {/*    console.log("Įkeltos nuotraukos:", urls)*/}
+
+            {/*  }}*/}
+            {/*/>*/}
+
+
           </div>
 
         </CardContent>

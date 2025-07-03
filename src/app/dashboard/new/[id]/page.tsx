@@ -9,7 +9,9 @@ import { prisma } from "../../../lib/prisma";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import {revalidatePath, unstable_noStore as noStore} from "next/cache";
-import { File } from "buffer";
+import UppyUploder from "../../uppy/UppyUploader";
+
+
 
 
 async function getData({ userId, noteId } : { userId: string; noteId: string }) {
@@ -29,11 +31,17 @@ async function getData({ userId, noteId } : { userId: string; noteId: string }) 
   return data;
 }
 
+
+
+
 export default async function DynamicRoute({
   params,
    } : {
   params: {id: string };
-}) {
+})
+ {
+
+
   const {getUser} = getKindeServerSession()
   const user = await getUser()
 
@@ -51,7 +59,8 @@ export default async function DynamicRoute({
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const files = formData.getAll("images") as File[];
+    // const files = formData.getAll("images") as File[];
+    // const imageUrls = formData.getAll("imageUrls") as string [];
 
     await prisma.note.update({
       where: {
@@ -61,7 +70,9 @@ export default async function DynamicRoute({
       data: {
         description: description,
         title: title,
-        images: files,
+        // images: {
+        //   set: imageUrls
+        // },
       },
     });
 
@@ -103,17 +114,16 @@ export default async function DynamicRoute({
           </div>
         </CardContent>
 
+<CardContent>
         <div className= "gap-y-4 flex flex-col">
           <Label className= "text-white text-lg">Nuotrauka</Label>
-          <Input
-            type= "file"
-            name= "image"
-            accept= "image/*"
-            multiple
-            placeholder= "Įkelkite nuotraukas, kurios turi būti panaudotus Jūsų užsakymo vykdymui"
-            required
-          />
+          <UppyUploder noteId={data?.id!} userId={user.id}/>
+          {/*<UppyUploader onUploadComplete={(urls) => setImageUrls(urls)}/>*/}
+          {/*{imageUrls.map((url, i) => (*/}
+          {/*  <input key={i} type= "hidden" name= "imageUrls" value={url}/>*/}
+          {/*))}*/}
         </div>
+      </CardContent>
 
         <CardFooter className= "flex justify-between ">
           <Link href= "/dashboard">

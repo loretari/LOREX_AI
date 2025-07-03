@@ -37,7 +37,7 @@ export const navItems:  NavItem[] = [
         icon: Settings,
     },
     {
-        name: "Page",
+        name: "Billing",
         href: "/dashboard/billing",
         icon: CreditCard,
     },
@@ -114,29 +114,33 @@ export const DashboardHeader = ({
                                 image={user?.picture as string}
                             />
                             {isAuthenticated ? (
-                                <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>
+                                <LogoutLink>
+                                    <Button variant= "primary">Atsijungti</Button>
+                                </LogoutLink>
 
                             ) : (
-                                loginItems.map(({ buttonVariant, name }) => (
+                              <>
+                                  {loginItems.map(({ buttonVariant, name }) => (
                                     <LoginLink key={name}>
                                         <Button variant={buttonVariant}>{name}</Button>
                                     </LoginLink>
-                                )),
-                                    loginItems.map(({ buttonVariant, name }) => (
+                                ))}
+                                  {loginItems.map(({ buttonVariant, name }) => (
                                         <RegisterLink key={name}>
                                             <Button variant={buttonVariant}>{name}</Button>
                                         </RegisterLink>
-
-                                    ))
+                                    ))}
+                              </>
                             )}
-
-
                             {/*))}*/}
                         </div>
+
                         <div className= "flex items-center lg:hidden">
 
                             <button className= "size-10 rounded-lg border-2 border-transparent [background:linear-gradient(var(--color-gray-950),var(--color-gray-950))_content-box,conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))] _border-box] relative"
-                                    onClick={() => setIsMobileNavOpen((curr) => !curr)}>
+                                    onClick={() => setIsMobileNavOpen((curr) => !curr)}
+                                    aria-label={isMobileNavOpen ? "Uždaryti meniu" : "Atidaryti meniu"}
+                              >
                                 <div className= "absolute top-1/2 left-1/2 -translate-x-1/2
        -translate-y-1/2 flex flex-col items-center justify-center gap-1">
                                     <div className= {twMerge(
@@ -196,27 +200,73 @@ export const DashboardHeader = ({
 
 
                         {/*</nav>*/}
-                            {navItems.map((item, index) => (
-                                <Link key={index} href={item.href}>
+                            {navItems.map((item) => (
+                                <Link
+                                  key={item.name}
+                                  href={item.href}
+                                  onClick={() => setIsMobileNavOpen(false)}
+                                  className={cn(
 
-                   <span className={cn(
-                       "group flex items-center rounded-md px-3 py-2 text-m font-medium hover:bg-popover-foreground hover:text-chart-3",
-                       pathname === item.href ? "bg-popover-foreground" : "bg"
-                   )}
-                   >
+                                    // "group flex items-center rounded-md px-3 py-2 text-m font-medium hover:bg-popover-foreground hover:text-chart-3",
+                                    "text-xs uppercase tracking-widest font-bold h-12 transition-all",
+                                    pathname === item.href ? "text-fuchsia-400" : "text-gray-400"
+                                  )}
+                                >
+
+                   {/*<span className={cn(*/}
+
+                   {/*    // "group flex items-center rounded-md px-3 py-2 text-m font-medium hover:bg-popover-foreground hover:text-chart-3",*/}
+                   {/*  "text-xs uppercase tracking-widest font-bold h-12 transition-all",*/}
+                   {/*  pathname === item.href ? "text-fuchsia-400" : "text-gray-400"*/}
+                   {/*)}*/}
+                   {/*>*/}
                        <item.icon className= "mr-2 h-4 w-4 text-chart-3" />
                        <span>{item.name}</span>
-                   </span>
+                   {/*</span>*/}
 
                                 </Link>
                             ))}
                         <UserNav/>
-                            <LogoutLink>
-                                Logout {""}
-                                <span>
-                <DoorClosed className= "w-4 h-4"/>
-            </span>
-                            </LogoutLink>
+
+                            {isAuthenticated ? (
+                              <LogoutLink>
+                                  <Button variant="primary" block onClick={() => setIsMobileNavOpen(false)}>
+                                      Atsijungti <DoorClosed className="w-4 h-4 ml-2" />
+                                  </Button>
+                              </LogoutLink>
+                            ) : (
+                              <>
+                                  {loginItems.map(({ buttonVariant, name }) => (
+                                    <LoginLink key={name}>
+                                        <Button
+                                          block
+                                          variant={buttonVariant}
+                                          onClick={() => setIsMobileNavOpen(false)}
+                                        >
+                                            {name}
+                                        </Button>
+                                    </LoginLink>
+                                  ))}
+                                  {loginItems.map(({ buttonVariant, name }) => (
+                                    <RegisterLink key={name}>
+                                        <Button
+                                          block
+                                          variant={buttonVariant}
+                                          onClick={() => setIsMobileNavOpen(false)}
+                                        >
+                                            {name}
+                                        </Button>
+                                    </RegisterLink>
+                                  ))}
+                              </>
+                            )}
+
+            {/*                <LogoutLink>*/}
+            {/*                    Logout {""}*/}
+            {/*                    <span>*/}
+            {/*    <DoorClosed className= "w-4 h-4"/>*/}
+            {/*</span>*/}
+            {/*                </LogoutLink>*/}
                         {/*{isAuthenticated ? (*/}
                         {/*       */}
                         {/*    <LogoutLink><Button variant= "primary">Atsijungti</Button></LogoutLink>*/}

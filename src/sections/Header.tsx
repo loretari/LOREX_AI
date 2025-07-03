@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge';
 import {Logo} from "../components/Logo";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 
 
 
@@ -39,7 +39,7 @@ export const navItems:  NavItem[] = [
   },
   {
     name: "Apie mus",
-    href: "#apie mus",
+    href: "#apie-mus",
   },
   {
     name: "Kainodara",
@@ -47,11 +47,7 @@ export const navItems:  NavItem[] = [
   },
 
     ];
-// ] satisfies {
-//   name: string;
-//   href: string;
-//   buttonVariant: ButtonProps["variant"];
-// }[];
+
 
 export const loginItems: LoginItem[] = [
   {
@@ -106,18 +102,26 @@ const [activeSection, setActiveSection] = useState<string>("");
     };
   }, []);
 
+  const handleAnchorClick = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      setIsMobileNavOpen(false);
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
       <>
       <header className= " fixed top-0 left-0 right-0 border-b border-gray-200/20 z-50 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60">
         <div className= "container">
          <div className= "h-18 lg:h-20  flex justify-between items-center ">
-           <Link href= "/">
-          <div className= "flex gap-4 items-center ">
+           <Link href= "/" className= "flex gap-4 items-center " prefetch={false}>
+
     {/*<Image src= {logo} />*/}
     <Logo />
-    <div className= "font-extrabold text-3xl hover:text-purple-500 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300">LorexAI</div>
-  </div>
+    <span className= "font-extrabold text-3xl hover:text-purple-500 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)] transition-all duration-300">
+      LorexAI</span>
+
            </Link>
 
   <div className= "h-full hidden lg:block">
@@ -133,15 +137,11 @@ const [activeSection, setActiveSection] = useState<string>("");
                 ? "text-fuchsia-400 drop-shadow-[0_0_6px_rgba(236,72,153,0.5)]"
                 : "hover:text-fuchsia-400 hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.5)]"
               )}
-
               onClick={(e) => {
                 e.preventDefault();
-                const element = document.querySelector(href);
-                if (element) {
-                  setIsMobileNavOpen(false);
-                  element.scrollIntoView({ behavior: 'smooth' });
-                }
+                handleAnchorClick(href);
               }}
+
           >
             {name}
           </a>
@@ -152,9 +152,11 @@ const [activeSection, setActiveSection] = useState<string>("");
   <div className= "hidden lg:flex gap-4">
     {isAuthenticated ? (
       <>
-      <Link href= "/dashboard">
-        <Button variant = "secondary" className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-700 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95">
-          Grįžti į savo paskyrą
+      <Link href= "/dashboard" prefetch={false}>
+        <Button
+          variant = "secondary"
+          className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-700 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95">
+          Mano paskyra
         </Button>
       </Link>
 
@@ -179,7 +181,9 @@ const [activeSection, setActiveSection] = useState<string>("");
 
   <div className= "flex items-center lg:hidden">
     <button className= "size-10 rounded-lg border-2 border-transparent [background:linear-gradient(var(--color-gray-950),var(--color-gray-950))_content-box,conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))] _border-box] relative"
-            onClick={() => setIsMobileNavOpen((curr) => !curr)}>
+            onClick={() => setIsMobileNavOpen((curr) => !curr)}
+            aria-label={isMobileNavOpen ? "Uždaryti meniu" : "Atidaryti meniu"}
+    >
       <div className= "absolute top-1/2 left-1/2 -translate-x-1/2
        -translate-y-1/2 flex flex-col items-center justify-center gap-1">
       <div className= {twMerge(
@@ -219,8 +223,12 @@ const [activeSection, setActiveSection] = useState<string>("");
               </div>
               <div className= "container h-full">
                 <nav className= "flex flex-col items-center gap-4 py-8 h-full justify-center">
-                  {navItems.map(({name, href}) => (
-                      <a
+                  {navItems.map(({name, href}) => {
+                    const isAnchor = href.startsWith("#");
+
+                    if (isAnchor) {
+                      return (
+                        <a
                           href= {href}
                           key= {name}
                           className= {twMerge(
@@ -230,23 +238,38 @@ const [activeSection, setActiveSection] = useState<string>("");
                           )}
                           onClick={(e) => {
                             e.preventDefault();
-                            const element = document.querySelector(href);
-                            if (element) {
-                              setIsMobileNavOpen(false);
-                              element.scrollIntoView({ behavior: 'smooth' });
-                            }
+                            handleAnchorClick(href);
                           }}
-                      >{name}</a>
-                  ))}
+                          >
+                        {name}</a>
+                      );
+                    }
+
+                    return (
+                      <Link
+                        href={href}
+                        key={name}
+                        prefetch={false}
+                        onClick={() => setIsMobileNavOpen(false)}>
+                          {name}
+                      </Link>
+                    );
+                  }
+                    )}
+
 
                   {isAuthenticated ? (
                     <>
-                      <Link href= "/dashboard">
-                        <Button variant= "secondary" className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-500 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95">Grįžti į savo paskyrą</Button>
+                      <Link href= "/dashboard"
+                      onClick={() => setIsMobileNavOpen(false)}>
+                        <Button variant= "secondary" className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white hover:from-fuchsia-500 hover:to-purple-700 transition-transform transform hover:scale-105 active:scale-95"
+                        block
+                        >
+                         Mano paskyra</Button>
                       </Link>
 
                       <LogoutLink>
-                        <Button variant= "primary">Atsijungti</Button>
+                        <Button variant= "primary" block>Atsijungti</Button>
                       </LogoutLink>
                     </>
                   ) : (
