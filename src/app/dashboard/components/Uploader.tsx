@@ -8,11 +8,12 @@ import {
 } from "../../../components/ui/card";
 import { Button } from "../../../components/Buttons";
 import { toast } from "sonner";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2, Trash2 } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import {v4 as uuidv4} from 'uuid';
 import { rejects } from "assert";
 import { event } from "next/dist/build/output/log";
+import { TrashDelete } from "./SubmitButtons";
 
 export function Uploader() {
   const [files, setFiles] = useState<
@@ -22,11 +23,68 @@ export function Uploader() {
        uploading: boolean;
        progress: number;
        key?: string;
-       iseDeleting: boolean;
+       isDeleting: boolean;
        error: boolean;
        objectUrl?: string;
     }>
     >([]);
+
+  async function removeFile(fileId: string) {
+     try {
+       const fileToRemove = files.find((f) => f.id === fileId);
+
+       if (fileToRemove) {
+         if (fileToRemove.objectUrl) {
+           URL.revokeObjectURL(fileToRemove.objectUrl);
+         }
+       }
+
+       setFiles((prevFiles) =>
+         prevFiles.map((f) =>
+           f.id === fileId
+             ? { ...f, isDeleting: true}
+             : f
+         )
+       );
+
+       const deletefileResponse = await fetch('/api/s3/delete', {
+         method: "DELETE",
+         headers: { "content-type": "application/json" },
+         body: JSON.stringify({
+           key: fileToRemove?.key,
+         }),
+       });
+
+       if(!deletefileResponse.ok) {
+         toast.error("Failed to delete file");
+
+         setFiles((prevFiles) =>
+           prevFiles.map((f) =>
+             f.id === fileId
+               ? { ...f, isDeleting: false, error: true}
+               : f
+           )
+         );
+
+         return;
+       }
+
+       toast.success("File deleted successfully");
+
+
+       setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileId));
+     } catch {
+       toast.error("Failed to delete file");
+
+       setFiles((prevFiles) =>
+         prevFiles.map((f) =>
+           f.id === fileId
+             ? { ...f, isDeleting: false, error: true}
+             : f
+         )
+       );
+     }
+  }
 
   async function uploadFile(file: File) {
     setFiles((prevFiles) =>
@@ -238,6 +296,21 @@ export function Uploader() {
                 alt={file.file.name }
                 className= "w-full h-full object-cover"
               />
+
+                <Button
+                  variant= "destructive"
+                  size = "icon"
+                  className= "text-red-600 absolute top-2 right-2"
+                  onClick={() => removeFile(file.id)}
+                  disabled={file.uploading || file.isDeleting}
+                >
+                  {file.isDeleting ? (
+                    <Loader2 className= "animate-spin size-4" />
+                  ) : (
+                    <Trash2 className= "size-4"/>
+                                    )}
+                </Button>
+
                 {file.uploading && !file.iseDeleting && (
                   <div className= "absolute inset-0 bg-white/10 flex items-center justify-center">
                     <p className= "text-white font-medium text-lg">
