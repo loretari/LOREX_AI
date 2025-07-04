@@ -229,11 +229,35 @@ export function Uploader() {
       }
     </CardContent>
   </Card>
-      <div className= "grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 mt-6">
+      <div className= "grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 mt-6 mb-24">
         {files.map((file) => (
-            <div key={file.id}>
-              <img src={file.objectUrl} alt={file.file.name }/>
-              <p className= "text-white">{file.progress}%</p>
+            <div key={file.id} className= "flex flex-col gap-1">
+              <div className= "relative aspect-square rounded-lg overflow-hidden">
+              <img
+                src={file.objectUrl}
+                alt={file.file.name }
+                className= "w-full h-full object-cover"
+              />
+                {file.uploading && !file.iseDeleting && (
+                  <div className= "absolute inset-0 bg-white/10 flex items-center justify-center">
+                    <p className= "text-white font-medium text-lg">
+                      {file.progress}%
+                    </p>
+                  </div>
+                )}
+
+                {file.error && (
+                  <div className= "absolute inset-0 bg-red-500/50 flex items-center justify-center">
+                    <p className= "text-white font-medium text-lg">
+                      Error
+                    </p>
+                  </div>
+                )}
+            </div>
+
+              <p className= "text-sm text-muted-foreground truncate">
+                {file.file.name}
+              </p>
             </div>
         )
           )}
@@ -241,5 +265,5 @@ export function Uploader() {
       </div>
   </>
 
-  )
+  );
 }
