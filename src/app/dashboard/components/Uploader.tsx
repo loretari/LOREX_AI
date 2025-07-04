@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import {v4 as uuidv4} from 'uuid';
+import { rejects } from "assert";
+import { event } from "next/dist/build/output/log";
 
 export function Uploader() {
   const [files, setFiles] = useState<
@@ -49,21 +51,71 @@ export function Uploader() {
 
         setFiles((prevFiles) =>
           prevFiles.map((f) =>
-          f.file === file
-            ? { ...f, uploading: false, progress: 0, error: true }
-            : f
+            f.file === file
+              ? { ...f, uploading: false, progress: 0, error: true }
+              : f
           )
         );
 
         return;
       }
 
-      const { presignedUrl, key } = await presignedUrlResponse.json()
+      const { presignedUrl, key } = await presignedUrlResponse.json();
 
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = (event.loaded / event.total) * 100;
+            setFiles((prevFiles) =>
+              prevFiles.map((f) =>
+                f.file === file
+                  ? { ...f, progress: Math.round(percentComplete), key: key }
+                  : f
+              )
+            );
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status == 200 || xhr.status == 204) {
+            setFiles((prevFiles) =>
+              prevFiles.map((f) =>
+                f.file === file
+                  ? { ...f, progress: 100, uploading: false, error: false }
+                  : f
+              )
+            );
+
+            toast.success("File uploaded successfully");
+
+          resolve();
+        } else {
+          reject(new Error(`Upload failed with status: ${xhr.status}`));
+        }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error("Upload failed"));
+        }
+
+        xhr.open ('PUT', presignedUrl);
+        xhr.setRequestHeader("Content-Type", file.type);
+        xhr.send(file);
+      });
     } catch  {
-      
+      toast.error("Upload failed");
+
+      setFiles((prevFiles) =>
+        prevFiles.map((f) =>
+          f.file === file
+            ? { ...f, uploading: false, progress: 0, error: true }
+            : f
+        )
+      );
     }
-  }
+  };
 
   const onDrop = useCallback ((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -181,6 +233,7 @@ export function Uploader() {
         {files.map((file) => (
             <div key={file.id}>
               <img src={file.objectUrl} alt={file.file.name }/>
+              <p className= "text-white">{file.progress}%</p>
             </div>
         )
           )}
