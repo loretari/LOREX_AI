@@ -9,7 +9,6 @@ import { prisma } from "../../../lib/prisma";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import {revalidatePath, unstable_noStore as noStore} from "next/cache";
-import UppyUploder from "../../uppy/UppyUploader";
 import { Uploader } from "../../components/Uploader";
 
 
@@ -32,15 +31,13 @@ async function getData({ userId, noteId } : { userId: string; noteId: string }) 
   return data;
 }
 
-
-
-
 export default async function DynamicRoute({
-  params,
-   } : {
-  params: {id: string };
-})
- {
+    params,
+     }: {
+    params: Promise<{ id: string }>;
+}) {
+  const { id }  = await params;
+
 
 
   const {getUser} = getKindeServerSession()
@@ -50,12 +47,14 @@ export default async function DynamicRoute({
     return redirect("/api/auth/login");
   }
 
-  const data = await getData({userId: user?.id as string, noteId: params.id});
+  const data = await getData({userId: user?.id as string, noteId: id});
+
+
 
   async function postData(formData: FormData) {
     "use server"
 
-    if (!user) throw new Error("Norėdami naudotis šia galimybe, pirmiausia prisijunkite.")
+    if (!user) throw new Error("Norėdami naudotis šia galimybe, pirmiausia prisijunkite.");
 
 
     const title = formData.get("title") as string;
